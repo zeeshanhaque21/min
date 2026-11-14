@@ -25,6 +25,8 @@ function createPrompt (options, callback) {
     }
   })
 
+  promptWindow.setContentProtection(true)
+
   promptWindow.on('closed', () => {
     promptWindow = null
     callback(promptAnswer)

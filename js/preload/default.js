@@ -34,8 +34,16 @@ setTimeout(function () {
 /* Used for picture in picture item in context menu */
 ipc.on('getContextMenuData', function (event, data) {
   // check for video element to show picture-in-picture menu
-  var hasVideo = Array.from(document.elementsFromPoint(data.x, data.y)).some(el => el.tagName === 'VIDEO')
-  ipc.send('contextMenuData', { hasVideo })
+  var elements = Array.from(document.elementsFromPoint(data.x, data.y))
+  var hasVideo = elements.some(el => el.tagName === 'VIDEO')
+  var post = elements.map(el => el.closest('shreddit-post')).find(Boolean)
+  var videoPageURL = post?.getAttribute('permalink')
+  if (videoPageURL && (location.hostname === 'reddit.com' || location.hostname.endsWith('.reddit.com'))) {
+    videoPageURL = new URL(videoPageURL, location.href).href
+  } else {
+    videoPageURL = null
+  }
+  ipc.send('contextMenuData', { hasVideo, videoPageURL })
 })
 
 ipc.on('enterPictureInPicture', function (event, data) {

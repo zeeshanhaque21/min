@@ -208,6 +208,8 @@ function createWindowWithBounds (bounds, customArgs) {
     backgroundColor: '#fff', // the value of this is ignored, but setting it seems to work around https://github.com/electron/electron/issues/10559
   })
 
+  newWin.setContentProtection(true)
+
   // windows and linux always use a menu button in the upper-left corner instead
   // if frame: false is set, this won't have any effect, but it does apply on Linux if "use separate titlebar" is enabled
   if (process.platform !== 'darwin') {

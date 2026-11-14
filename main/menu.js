@@ -154,6 +154,12 @@ function buildAppMenu (options = {}) {
         ...(!options.secondary ? tabTaskActions : []),
         ...(!options.secondary ? [{ type: 'separator' }] : []),
         {
+          label: 'Browse Local Files',
+          click: function (item, window) {
+            sendIPCToWindow(window, 'addTab', { url: 'min://app/pages/local-files/index.html' })
+          }
+        },
+        {
           label: l('appMenuSavePageAs'),
           accelerator: 'CmdOrCtrl+s',
           click: function (item, window) {

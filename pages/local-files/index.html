@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' blob:; media-src blob:; style-src 'self'; script-src 'self'">
+  <title>Local files</title>
+  <link rel="stylesheet" href="./local-files.css">
+  <script src="./local-files.js" defer></script>
+</head>
+<body>
+  <header>
+    <div><h1>Local files</h1><p>Browse a folder without uploading your files.</p></div>
+    <label class="choose">Choose folder<input id="folder" type="file" webkitdirectory multiple></label>
+  </header>
+  <main>
+    <div class="toolbar">
+      <nav aria-label="Current folder"><button id="up" type="button" disabled>← Back</button><span id="path">No folder selected</span></nav>
+      <div class="views" aria-label="View"><button id="list" type="button" aria-pressed="true">Files</button><button id="gallery" type="button" aria-pressed="false">Gallery</button></div>
+    </div>
+    <p id="status" role="status">Choose a folder to browse its files.</p>
+    <div id="items" class="items"></div>
+  </main>
+  <dialog id="preview" aria-labelledby="preview-title">
+    <div class="preview-header"><strong id="preview-title"></strong><button id="close" type="button" aria-label="Close preview">×</button></div>
+    <div id="media"></div>
+  </dialog>
+</body>
+</html>

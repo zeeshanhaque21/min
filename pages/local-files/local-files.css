@@ -1,0 +1,31 @@
+:root { color-scheme: light dark; font: 15px system-ui, sans-serif; background: light-dark(#f6f7f9, #17191e); color: light-dark(#20242c, #eceef2); }
+* { box-sizing: border-box; }
+body { margin: 0; }
+header, main { max-width: 1100px; margin: auto; padding: 32px; }
+header { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding-bottom: 12px; }
+h1 { font-size: 28px; margin: 0; letter-spacing: -.03em; }
+p { color: light-dark(#666e7b, #aeb5c1); }
+button, .choose { font: inherit; border: 1px solid light-dark(#d8dce3, #454b58); border-radius: 8px; padding: 8px 12px; background: light-dark(#fff, #282c34); color: inherit; cursor: pointer; }
+button:hover, .choose:hover { border-color: #6989d8; }
+button:disabled { opacity: .45; cursor: default; }
+button:focus-visible, .choose:focus-within { outline: 2px solid #6989d8; outline-offset: 2px; }
+.choose { background: #355ecb; color: white; border-color: #355ecb; white-space: nowrap; }
+.choose input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.toolbar, nav, .views { display: flex; align-items: center; gap: 10px; }
+.toolbar { justify-content: space-between; flex-wrap: wrap; }
+nav { min-width: 0; }
+#path { overflow-wrap: anywhere; color: light-dark(#555e6d, #b6bfce); }
+.views [aria-pressed="true"] { background: #355ecb; color: white; border-color: #355ecb; }
+.items { display: grid; gap: 8px; }
+.items.gallery { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; }
+.item { text-align: left; display: flex; align-items: center; gap: 12px; min-width: 0; overflow: hidden; }
+.item span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gallery .item { display: flex; flex-direction: column; align-items: stretch; padding: 8px; }
+.gallery .item img, .gallery .placeholder { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 5px; background: light-dark(#edf0f5, #343a45); }
+.gallery .placeholder { display: grid; place-items: center; font-size: 32px; }
+dialog { width: min(960px, 94vw); max-height: 90vh; border: 0; border-radius: 12px; padding: 16px; background: light-dark(#fff, #242831); color: inherit; }
+dialog::backdrop { background: #000b; }
+.preview-header { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 12px; overflow-wrap: anywhere; }
+#media { display: grid; place-items: center; }
+#media img, #media video { max-width: 100%; max-height: 72vh; }
+@media (max-width: 600px) { header, main { padding: 20px; } header { align-items: flex-start; flex-direction: column; } }

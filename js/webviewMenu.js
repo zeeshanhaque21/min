@@ -32,6 +32,16 @@ const webviewMenu = {
       ])
     }
 
+    if ((data.mediaType === 'video' || extraData.hasVideo) && /^https?:\/\//i.test(currentTab.url)) {
+      menuSections.push([{
+        label: 'Download video with yt-dlp',
+        click: function () {
+          const frameURL = data.frameURL && data.frameURL !== currentTab.url && /^https?:\/\//i.test(data.frameURL) ? data.frameURL : null
+          ipc.invoke('downloadVideoWithYtdlp', extraData.videoPageURL || frameURL || currentTab.url)
+        }
+      }])
+    }
+
     /* Spellcheck */
 
     if (data.misspelledWord) {

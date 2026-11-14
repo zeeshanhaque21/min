@@ -74,6 +74,49 @@ ipc.handle('clearStorageData', function () {
     })
 })
 
+ipc.handle('downloadVideoWithYtdlp', async function (e, pageURL) {
+  const owner = windows.windowFromContents(e.sender)?.win
+  if (!owner || typeof pageURL !== 'string' || pageURL.length > 8192) return
+  try {
+    const url = new URL(pageURL)
+    if (!['http:', 'https:'].includes(url.protocol)) return
+  } catch (err) { return }
+
+  const result = await dialog.showOpenDialog(owner, {
+    title: 'Choose a folder for the video',
+    properties: ['openDirectory', 'createDirectory']
+  })
+  if (result.canceled || !result.filePaths[0]) return
+
+  const binary = process.platform === 'darwin' && fs.existsSync('/opt/homebrew/bin/yt-dlp')
+    ? '/opt/homebrew/bin/yt-dlp'
+    : 'yt-dlp'
+  const child = require('child_process').spawn(binary, [
+    '--ignore-config', '--no-plugin-dirs', '--no-playlist', '--no-overwrites',
+    '--paths', result.filePaths[0], '-o', '%(title).150B [%(id)s].%(ext)s', '--', pageURL
+  ], {
+    shell: false,
+    env: { ...process.env, PATH: `${process.env.PATH || ''}${path.delimiter}/opt/homebrew/bin${path.delimiter}/usr/local/bin` }
+  })
+  let errorOutput = ''
+  child.stderr.on('data', chunk => { errorOutput = (errorOutput + chunk.toString()).slice(-4000) })
+  child.stdout.resume()
+  let spawnError = null
+  child.on('error', err => { spawnError = err })
+  child.on('close', code => {
+    if (code === 0 && !spawnError) {
+      dialog.showMessageBox({ type: 'info', title: 'Video downloaded', message: 'The video was saved to the selected folder.' })
+    } else {
+      dialog.showMessageBox({
+        type: 'error',
+        title: 'Video download failed',
+        message: spawnError?.code === 'ENOENT' ? 'yt-dlp is not installed or could not be found.' : 'yt-dlp could not download this video.',
+        detail: spawnError ? spawnError.message : errorOutput || `yt-dlp exited with code ${code}.`
+      })
+    }
+  })
+})
+
 /* window actions */
 
 ipc.handle('minimize', function (e) {
